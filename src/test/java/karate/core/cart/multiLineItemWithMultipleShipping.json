@@ -1,0 +1,14 @@
+{
+  "items": [
+    {
+      "lineItemId": 1,
+      "itemId": "{{itemId}}",
+      "shipToId": "{{shipToId}}"
+    },
+    {
+      "lineItemId": 2,
+      "itemId": "{{itemId}}",
+      "shipToId": "{{shipToId}}"
+    }
+  ]
+}

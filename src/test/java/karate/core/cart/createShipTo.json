@@ -1,0 +1,40 @@
+{
+  "cartId": "{{cartId}}",
+  "address": {
+    "attention":"Billing manager",
+    "street1": "10400 NE 4th St ",
+    "street2":"Suite 710",
+    "city": "Bellevue",
+    "state": "WA",
+    "country": "United States",
+    "zipCode": "98004",
+    "kind": "shipping",
+    "name": {
+      "first": "John",
+      "last": "Smith"
+    },
+    "email": "johnsmith@fabric.inc",
+    "phone": {
+      "number": "123-992-9404",
+      "kind": "MOBILE"
+    }
+  },
+  "shipToType": "SHIP_TO_ADDRESS",
+  "shipMethod": {
+    "shipMethodId": "{{shippingId}}",
+    "shipmentCarrier": "123",
+    "shipmentMethod": "Next Day",
+    "cost": {
+      "currency": "USD",
+      "amount": "{{cost}}",
+      "discount":0
+    }
+  },
+  "locationNum": "123",
+  "taxCode": "FR123456",
+  "pickup":false,
+  "warehouseId":"XYZ-1234",
+  "storeId":"ABC-123",
+  "estimatedShipDate": "2022-09-23T20:01:24.702Z",
+  "shipmentInstructions" : "Instruction1"
+}

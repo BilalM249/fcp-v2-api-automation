@@ -1,0 +1,28 @@
+{
+  "cartId": "{{cartId}}",
+  "shipToType": "BOPIS",
+  "locationNum": "{{locationNum}}",
+  "taxCode": "FR123456",
+  "isPickup": true,
+  "warehouseId": "XYZ-1234",
+  "storeId": "ABC-123",
+  "estimatedShipDate": "2022-09-23T20:01:24.702Z",
+  "shipmentInstructions": "Instruction1",
+  "pickupPerson": {
+    "name": {
+      "first": "XYZ",
+      "last": "ABC"
+    },
+    "email": "first@fabric.inc",
+    "phone": {
+      "number": "8087769338",
+      "kind": "MOBILE"
+    }
+  },
+  "altPickupPerson": {
+    "name": {
+      "first": "Alter",
+      "last": "last"
+    }
+  }
+}

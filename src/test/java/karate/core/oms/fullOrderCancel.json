@@ -1,0 +1,18 @@
+{
+  "orderId": "{{orderId}}",
+  "reasonCode": "TestCode1",
+  "subReasonCode": "1DMG",
+  "source": "ALLOCATION_SERVICE",
+  "employeeId": 4321,
+  "policyCode": "PC1",
+  "note": "QA request",
+  "releaseSoftReservation": true,
+  "attributes": {
+    "type": "string",
+    "salesRepId": 342463,
+    "approver": "John Doe"
+  },
+  "items": [
+
+  ]
+}

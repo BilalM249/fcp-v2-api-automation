@@ -1,0 +1,190 @@
+image: public.ecr.aws/docker/library/maven:3.8.7-openjdk-18
+stages:
+  - test_fcp
+  - verify_tests
+variables:
+  FF_USE_LEGACY_KUBERNETES_EXECUTION_STRATEGY: "true"
+
+  
+test_fcp:
+  stage: test_fcp
+  script: |
+      echo "MY_ENV_VAR=$CI_JOB_ID" >> .myenv
+      echo "ORIGIN=$ORIGIN" >> .myenv
+      echo "ENV=$ENV" >> .myenv
+      echo "Variables are '$ENV' and '$ORIGIN'"
+      mvn clean test -Dkarate.env=$ENV
+  artifacts:
+    when: always
+    paths:
+      - ./target
+    reports:
+      dotenv: .myenv
+    expire_in: 1 week
+  rules:
+  - if: $ORIGIN != null
+  after_script:
+    - |
+      if [ $CI_JOB_STATUS == 'success' ]; then
+        echo "Variables are '$ENV' and '$ORIGIN'"
+        newUrl="https://fabric2.gitlab.io/-/fcp/fcp-qa-karate/-/jobs/${CI_JOB_ID}/artifacts/target/cucumber-html-reports/overview-features.html"
+        echo "$newUrl"
+        - |
+        curl -X POST -H "Content-type: application/json" --data "{\"text\":\"Hola,  Automation Passed for: ${ORIGIN} on Stage: ${ENV}, please check report ${newUrl}\"}" "https://hooks.slack.com/services/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"
+      fi
+      if [ $CI_JOB_STATUS == 'failed' ]; then
+        echo "Variables are '$ENV' and '$ORIGIN'"
+        echo "Tests failed"
+        newUrl="https://fabric2.gitlab.io/-/fcp/fcp-qa-karate/-/jobs/${CI_JOB_ID}/artifacts/target/cucumber-html-reports/overview-features.html"
+        echo "$newUrl"
+        - |
+        curl -X POST -H "Content-type: application/json" --data "{\"text\":\"Alert, Automation failed for: ${ORIGIN} on Stage: ${ENV}, please check report ${newUrl}\"}" "https://hooks.slack.com/services/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"
+      fi
+
+test_fcp_internal_staging:
+  stage: test_fcp
+  script: |
+    echo "MY_ENV_VAR=$CI_JOB_ID" >> .myenv
+    echo "ORIGIN=$ORIGIN" >> .myenv
+    echo "ENV=$ENV" >> .myenv
+    echo "Variables are '$ENV' and '$ORIGIN'"
+    mvn clean test -Dkarate.env=stg02
+  artifacts:
+    when: always
+    paths:
+      - ./target
+    reports:
+      dotenv: .myenv
+    expire_in: 1 week
+  rules:
+  - if: $ORIGIN == null
+    variables:
+      ORIGIN: 'fCP'
+      ENV: 'stg02'
+  after_script:
+     - |
+      if [ $CI_JOB_STATUS == 'success' ]; then
+        echo "Variables are '$ENV' and '$ORIGIN'"
+        newUrl="https://fabric2.gitlab.io/-/fcp/fcp-qa-karate/-/jobs/${CI_JOB_ID}/artifacts/target/cucumber-html-reports/overview-features.html"
+        echo "$newUrl"
+        - |
+        curl -X POST -H "Content-type: application/json" --data "{\"text\":\"Hola,  Automation Passed for: ${ORIGIN} on Stage: ${ENV}, please check report ${newUrl}\"}" "https://hooks.slack.com/services/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"
+      fi
+      if [ $CI_JOB_STATUS == 'failed' ]; then
+        echo "Variables are '$ENV' and '$ORIGIN'"
+        echo "Tests failed"
+        newUrl="https://fabric2.gitlab.io/-/fcp/fcp-qa-karate/-/jobs/${CI_JOB_ID}/artifacts/target/cucumber-html-reports/overview-features.html"
+        echo "$newUrl"
+        - |
+        curl -X POST -H "Content-type: application/json" --data "{\"text\":\"Alert, Automation failed for: ${ORIGIN} on Stage: ${ENV}, please check report ${newUrl}\"}" "https://hooks.slack.com/services/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"
+      fi
+
+test_fcp_internal_sandbox:
+  stage: test_fcp
+  script: |
+    echo "MY_ENV_VAR=$CI_JOB_ID" >> .myenv
+    echo "ORIGIN=$ORIGIN" >> .myenv
+    echo "ENV=$ENV" >> .myenv
+    echo "Variables are '$ENV' and '$ORIGIN'"
+    mvn clean test -Dkarate.env=sandbox
+  artifacts:
+    when: always
+    paths:
+      - ./target
+    reports:
+      dotenv: .myenv
+    expire_in: 1 week
+  rules:
+  - if: $ORIGIN == null
+    variables:
+      ORIGIN: 'fCP'
+      ENV: 'sandbox'
+  after_script:
+   - |
+      echo $CI_JOB_STATUS
+      if [ $CI_JOB_STATUS == 'success' ]; then
+        echo "Variables are '$ENV' and '$ORIGIN'"
+        newUrl="https://fabric2.gitlab.io/-/fcp/fcp-qa-karate/-/jobs/${CI_JOB_ID}/artifacts/target/cucumber-html-reports/overview-features.html"
+        echo "$newUrl"
+        - |
+        curl -X POST -H "Content-type: application/json" --data "{\"text\":\"Hola,  Automation Passed for: ${ORIGIN} on Stage: ${ENV}, please check report ${newUrl}\"}" "https://hooks.slack.com/services/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"
+      fi
+      if [ $CI_JOB_STATUS == 'failed' ]; then
+        echo "Variables are '$ENV' and '$ORIGIN'"
+        echo "Tests failed"
+        newUrl="https://fabric2.gitlab.io/-/fcp/fcp-qa-karate/-/jobs/${CI_JOB_ID}/artifacts/target/cucumber-html-reports/overview-features.html"
+        echo "$newUrl"
+        - |
+        curl -X POST -H "Content-type: application/json" --data "{\"text\":\"Alert, Automation failed for: ${ORIGIN} on Stage: ${ENV}, please check report ${newUrl}\"}" "https://hooks.slack.com/services/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"
+      fi
+
+test_fcp_internal_production:
+  stage: test_fcp
+  script: |
+    echo "MY_ENV_VAR=$CI_JOB_ID" >> .myenv
+    echo "ORIGIN=$ORIGIN" >> .myenv
+    echo "ENV=$ENV" >> .myenv
+    echo "Variables are '$ENV' and '$ORIGIN'"
+    mvn clean test -Dkarate.env=prod01
+  artifacts:
+    when: always
+    paths:
+      - ./target
+    reports:
+      dotenv: .myenv
+    expire_in: 1 week
+  rules:
+  - if: $ORIGIN == null
+    variables:
+      ORIGIN: 'fCP'
+      ENV: 'prod01'
+  after_script:
+   - |
+      echo $CI_JOB_STATUS
+      if [ $CI_JOB_STATUS == 'success' ]; then
+        echo "Variables are '$ENV' and '$ORIGIN'"
+        newUrl="https://fabric2.gitlab.io/-/fcp/fcp-qa-karate/-/jobs/${CI_JOB_ID}/artifacts/target/cucumber-html-reports/overview-features.html"
+        echo "$newUrl"
+        - |
+        curl -X POST -H "Content-type: application/json" --data "{\"text\":\"Hola,  Automation Passed for: ${ORIGIN} on Stage: ${ENV}, please check report ${newUrl}\"}" "https://hooks.slack.com/services/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"
+      fi
+      if [ $CI_JOB_STATUS == 'failed' ]; then
+        echo "Variables are '$ENV' and '$ORIGIN'"
+        echo "Tests failed"
+        newUrl="https://fabric2.gitlab.io/-/fcp/fcp-qa-karate/-/jobs/${CI_JOB_ID}/artifacts/target/cucumber-html-reports/overview-features.html"
+        echo "$newUrl"
+        - |
+        curl -X POST -H "Content-type: application/json" --data "{\"text\":\"Alert, Automation failed for: ${ORIGIN} on Stage: ${ENV}, please check report ${newUrl}\"}" "https://hooks.slack.com/services/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"
+      fi
+
+  
+
+# tests_passed:
+#   stage: verify_tests
+#   when: on_success # this is the default, so you could leave this off. I'm adding it for clarity
+#   script:
+#     - echo "Variables are '$ENV' and '$ORIGIN'"
+#     - newUrl="https://fabric2.gitlab.io/-/fcp/fcp-qa-karate/-/jobs/${MY_ENV_VAR}/artifacts/target/cucumber-html-reports/overview-features.html"
+#     - echo "$newUrl"
+#     - |
+#       curl -X POST -H "Content-type: application/json" --data "{\"text\":\"Hola,  Automation Passed for: ${ORIGIN} on Stage: ${ENV}, please check report ${newUrl}\"}" "https://hooks.slack.com/services/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"
+#   only:
+#     - main
+
+# tests_failed:
+#   stage: verify_tests
+#   when: on_failure # this will only run if a job in a prior stage fails
+#   script:
+#    - echo "Variables are '$ENV' and '$ORIGIN'"
+#    - echo "Tests failed"
+#    - newUrl="https://fabric2.gitlab.io/-/fcp/fcp-qa-karate/-/jobs/${MY_ENV_VAR}/artifacts/target/cucumber-html-reports/overview-features.html"
+#    - |
+#       curl -X POST -H "Content-type: application/json" --data "{\"text\":\"Alert, Automation failed for: ${ORIGIN} on Stage: ${ENV}, please check report ${newUrl}\"}" "https://hooks.slack.com/services/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"
+#   only:
+#     - main
+   
+   
+
+
+
+

@@ -1,0 +1,54 @@
+{
+  "cartId": "{{cartId}}",
+  "customerEmail": "cnc@fabric.inc",
+  "orderType": "WEB",
+  "estimatedTax": {
+    "itemsTaxes": [
+      {
+        "lineItemId": 1,
+        "amount": 0
+      },
+      {
+        "lineItemId": 2,
+        "amount": 0
+      }
+    ],
+    "shipToTaxes": [
+      {
+        "shipToId": "{{shipToId}}",
+        "amount": 0
+      },
+      {
+        "shipToId": "{{shipToId}}",
+        "amount": 0
+      }
+    ]
+
+  },
+  "paymentDetails": [
+    {
+      "connectorName": "CASH_ON_DELIVERY",
+      "paymentMethod": "CASH_ON_DELIVERY",
+      "paymentToken": "5444003014682205",
+      "amount": "{{amount}}",
+      "currency": "USD",
+      "billToAddress": {
+        "name": {
+          "first": "CNC",
+          "last": "Test"
+        },
+        "phone": {
+          "number": "1234567890",
+          "kind": "MOBILE"
+        },
+        "email": "user@cnc.com",
+        "street1": "1 EVE Street",
+        "city": "NY",
+        "state": "CA",
+        "country": "US",
+        "zipCode": "123456",
+        "customerId": "504748630"
+      }
+    }
+  ]
+}
